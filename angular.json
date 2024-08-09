@@ -12,22 +12,27 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/ngx-sweetalert2/tsconfig.lib.json",
             "project": "projects/ngx-sweetalert2/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "projects/ngx-sweetalert2/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-sweetalert2/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-sweetalert2/src/test.ts",
             "tsConfig": "projects/ngx-sweetalert2/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-sweetalert2/karma.conf.js"
-          },
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+         },
           "configurations": {
             "ci": {
               "watch": false,
@@ -53,7 +58,7 @@
             },
             "index": "projects/ngx-sweetalert2-demo/src/index.html",
             "polyfills": [
-              "projects/ngx-sweetalert2-demo/src/polyfills.ts"
+              "zone.js"
             ],
             "tsConfig": "projects/ngx-sweetalert2-demo/tsconfig.app.json",
             "aot": true,
@@ -78,36 +83,27 @@
                   "with": "projects/ngx-sweetalert2-demo/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "ngx-sweetalert2-demo:build"
-          },
           "configurations": {
             "production": {
+              "buildTarget": "ngx-sweetalert2-demo:build"
+            },
+            "development": {
               "buildTarget": "ngx-sweetalert2-demo:build:production"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -118,8 +114,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngx-sweetalert2-demo/src/test.ts",
-            "polyfills": "projects/ngx-sweetalert2-demo/src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/ngx-sweetalert2-demo/tsconfig.spec.json",
             "karmaConfig": "projects/ngx-sweetalert2-demo/karma.conf.js",
             "assets": [
